@@ -35,22 +35,12 @@ class GameSession:
         if not self.can_afford_spin():
             raise ValueError("Insufficient balance for spin.")
 
-        # Deduct the bet first
-        self.place_bet()
+        self.place_bet()                                        # Deduct
+        grid = spin_once()                                      # Spin
+        total_multiplier = evaluate_spin(grid)                  # sum of multipliers
+        win_amount = total_multiplier * self.bet_per_spin       # convert to credits
+        self.balance += win_amount                              # add to balance
 
-        # Spin the reels
-        grid = spin_once()
-
-        # This is the sum of line multipliers from the paytable
-        total_multiplier = evaluate_spin(grid)
-
-        # Convert multiplier into actual credits won
-        win_amount = total_multiplier * self.bet_per_spin
-
-        # Add winnings to balance
-        self.balance += win_amount
-
-        # Return everything you might want on the front-end
         return {
             "grid_reel_major": grid,
             "grid_row_major": to_rows(grid),
