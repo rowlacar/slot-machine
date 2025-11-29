@@ -4,6 +4,61 @@ import random
 
 from slot_config import NUM_REELS, NUM_ROWS, SYMBOL_IDS, PAYLINES, PAYOUTS
 
+class GameSession:
+    def __init__(self, starting_balance: int, bet_per_spin: int):
+        """
+        Represents a slot session.
+
+        :param starting_balance: how many credits the player starts with
+        :param bet_per_spin: how many credits are bet on each spin
+        """
+        self.balance = starting_balance
+        self.bet_per_spin = bet_per_spin
+
+    def set_bet(self, new_bet: int):
+        """
+        Change the bet per spin. Must be a positive integer.
+        """
+        if new_bet <= 0:
+            raise ValueError("Bet per spin must be positive.")
+        self.bet_per_spin = new_bet
+
+    def can_afford_spin(self) -> bool:
+        return self.balance >= self.bet_per_spin
+
+    def place_bet(self):
+        if not self.can_afford_spin():
+            raise ValueError("Insufficient balance for spin.")
+        self.balance -= self.bet_per_spin
+
+    def spin(self):
+        if not self.can_afford_spin():
+            raise ValueError("Insufficient balance for spin.")
+
+        # Deduct the bet first
+        self.place_bet()
+
+        # Spin the reels
+        grid = spin_once()
+
+        # This is the sum of line multipliers from the paytable
+        total_multiplier = evaluate_spin(grid)
+
+        # Convert multiplier into actual credits won
+        win_amount = total_multiplier * self.bet_per_spin
+
+        # Add winnings to balance
+        self.balance += win_amount
+
+        # Return everything you might want on the front-end
+        return {
+            "grid_reel_major": grid,
+            "grid_row_major": to_rows(grid),
+            "multiplier": total_multiplier,
+            "win": win_amount,  # actual credits won
+            "balance": self.balance,  # updated balance after win
+        }
+
 def spin_once():
     return [
         [random.choice(SYMBOL_IDS) for i in range(NUM_ROWS)]
@@ -33,10 +88,9 @@ def symbols_on_payline(grid, payline):
 def evaluate_line(symbols_on_line):
     """
     Given a list of symbols from a single payline, return the payout
-    for that line according to the PAYOUTS table.
 
-    - We count how many matching symbols we have from the left.
-    - Then we look up (symbol, count) in the PAYOUTS dict.
+    - Count how many matching symbols we have from the left.
+    - Then look up (symbol, count) in PAYOUTS
     """
     if not symbols_on_line:
         return 0
@@ -68,23 +122,31 @@ def evaluate_spin(grid):
         line_win = evaluate_line(line_symbols)
         total_win += line_win
 
+
     return total_win
 
 if __name__ == "__main__":
-    result = spin_once()
+    session = GameSession(10, 3)
+    result = session.spin()
+    print(result)
+    print (session.balance)
 
-    print("Grid (reel-major):")
-    for reel in result:
-        print(reel)
+# if __name__ == "__main__":
+#     session = GameSession(10, 3)
+#     grid, win = session.spin()
+#     print("Grid:", grid)
+#     print("Win:", win)
+#     print("Balance after spin:", session.balance)
 
-    print("\nPaylines:")
-    for i, payline in enumerate(PAYLINES, start=1):
-        line_symbols = symbols_on_payline(result, payline)
-        line_win = evaluate_line(line_symbols)
-        print(f"Line {i}: {line_symbols} -> win: {line_win}")
-
-    total = evaluate_spin(result)
-    print(f"\nTotal win for this spin: {total}")
+# if __name__ == "__main__":
+#     session = GameSession(10, 3)
+#     print("Starting balance:", session.balance)
+#
+#     session.place_bet()
+#     print("After first bet:", session.balance)
+#
+#     session.place_bet()
+#     print("After second bet:", session.balance)
 
 # result = spin_once()
 # print("Grid (reel-major):")
