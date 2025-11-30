@@ -62,6 +62,7 @@ def to_rows(grid):
     rows = []
     for row in range(NUM_ROWS):
         rows.append([grid[reel][row] for reel in range(NUM_REELS)])
+    return rows
 
 def symbols_on_payline(grid, payline):
     """
