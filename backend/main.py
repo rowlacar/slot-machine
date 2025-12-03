@@ -1,6 +1,5 @@
 # backend/main.py
 
-
 from fastapi import FastAPI, HTTPException
 from slot_engine import GameSession
 from pydantic import BaseModel
@@ -49,6 +48,7 @@ def spin():
         # e.g. "Insufficient balance for spin."
         raise HTTPException(status_code=400, detail=str(e))
 
+# Session
 @app.get("/session", response_model=SessionState)
 def get_session_state():
     return {
@@ -56,6 +56,7 @@ def get_session_state():
         "bet_per_spin": session.bet_per_spin
     }
 
+# Reset
 @app.post("/reset")
 def reset_session():
     session.balance = 100
@@ -66,6 +67,7 @@ def reset_session():
         "bet_per_spin": session.bet_per_spin
     }
 
+# Simulate
 @app.post("/simulate")
 def simulate(req: SimulationRequest):
     result = run_simulation(req.num_spins)

@@ -1,42 +1,51 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* src/App.css */
+
+.app-root {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;              /* keeps card away from edges on small screens */
+}
+
+/* The card that contains the slot machine UI */
+.slot-card {
+  background: #222;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  padding: 2.5rem 3rem;
   text-align: center;
+
+  /* Responsive width:
+     - max 600px on big screens
+     - shrink nicely on small screens
+  */
+  width: min(600px, 100%);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Title and text */
+.slot-title {
+  margin: 0 0 0.75rem;
+  font-size: clamp(2.2rem, 5vw, 3.2rem); /* grows with viewport */
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.slot-balance {
+  margin: 0 0 1.5rem;
+  font-size: 1rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Spin button */
+.spin-button {
+  margin-top: 1rem;
+  padding: 0.6rem 1.8rem;
+  border-radius: 999px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  background: #111;
+  color: #f5f5f5;
 }
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+.spin-button:hover {
+  filter: brightness(1.2);
 }
