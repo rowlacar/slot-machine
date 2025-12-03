@@ -3,33 +3,45 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
+// src/App.jsx
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [balance, setBalance] = useState(100);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div style={{ 
+      minHeight: "100vh", 
+      display: "flex", 
+      justifyContent: "center", 
+      alignItems: "center", 
+      background: "#111", 
+      color: "#f5f5f5" 
+      }}
+      >
+      <div style={{ 
+        padding: "2rem", 
+        borderRadius: "1rem", 
+        background: "#222", 
+        boxShadow: "0 0 20px rgba(0,0,0,0.6)", 
+        textAlign: "center" 
+        }}
+        >
+        <h1>Slot Machine</h1>
+        <p>Balance: ${balance}</p>
+        <button 
+        style={{ 
+          marginTop: "1rem", 
+          padding: "0.5rem 1.5rem", 
+          borderRadius: "999px", border: "none", 
+          fontSize: "1rem", cursor: "pointer" 
+          }}
+          onClick={() => setBalance(balance - 1)}
+        >
+          Spin
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
