@@ -8,6 +8,24 @@
   padding: 2rem;              /* keeps card away from edges on small screens */
 }
 
+.slot-reels {
+  display: flex;               /* lay children in a row */
+  justify-content: center;     /* center them */
+  gap: 1rem;                   /* space between reels */
+  margin: 1.5rem 0;
+}
+
+.reel {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  background: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
 /* The card that contains the slot machine UI */
 .slot-card {
   background: #222;
